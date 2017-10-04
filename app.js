@@ -1,4 +1,4 @@
-var scores, roundScore, activePlayer, gamePlaying = true;
+var scores, roundScore, activePlayer, dicePrevious, gamePlaying = true;
 
 init();
 
@@ -7,7 +7,7 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     if(gamePlaying) {
         //Random Number
         var dice = Math.floor(Math.random() * 6) + 1;
-
+        console.log(dice);
         //Display the result
         var diceDOM = document.querySelector('.dice');
         diceDOM.style.display = 'block';
@@ -15,10 +15,19 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 
         //Update round score if rolled number is NOT a 1
         if (dice > 1) {
-            //add score
-            roundScore += dice; 
-            document.getElementById('current-' + activePlayer).textContent = roundScore; 
-
+            //if two sixes
+            if(dice === dicePrevious && dice === 6) {
+                roundScore = 0;
+                document.getElementById('current-' + activePlayer).textContent = roundScore;
+                scores[activePlayer] = 0;
+                document.getElementById('score-' + activePlayer).textContent = scores[activePlayer]; 
+                nextPlayer();                                                                      
+            } else {
+                //add score
+                roundScore += dice; 
+                document.getElementById('current-' + activePlayer).textContent = roundScore;
+            }
+        dicePrevious = dice;
         } else {
             nextPlayer();
         }
@@ -37,7 +46,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
 
 
         //check if player won the game
-        if (scores[activePlayer] >= 10){
+        if (scores[activePlayer] >= 100){
             //player wins
             document.getElementById('name-' + activePlayer).textContent = 'Winner!';
             document.querySelector('.dice').style.display = 'none';
@@ -74,6 +83,8 @@ function init() {
     scores = [0, 0];
     roundScore = 0;
     activePlayer = 0;
+    dicePrevious = 0;
+    gamePlaying = true;
     document.querySelector('.dice').style.display = 'none';
     document.getElementById('score-0').textContent ='0';
     document.getElementById('score-1').textContent ='0';
