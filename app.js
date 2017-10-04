@@ -43,10 +43,16 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         //update UI
         document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
 
-
-
         //check if player won the game
-        if (scores[activePlayer] >= 100){
+        var winningScore;
+        var input = document.querySelector('.final-score').value;
+        if(input){
+            winningScore = input;
+        } else {
+            winningScore = 100;
+        }
+        
+        if (scores[activePlayer] >= winningScore){
             //player wins
             document.getElementById('name-' + activePlayer).textContent = 'Winner!';
             document.querySelector('.dice').style.display = 'none';
